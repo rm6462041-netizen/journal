@@ -1,0 +1,381 @@
+/* Analytics.css - MODERN REDESIGN */
+.analytics-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding: 0 8px;
+}
+
+.analytics-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.dark-mode .analytics-header h3 {
+    color: #f9fafb;
+}
+
+.month-navigation {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #ffffff;
+    padding: 8px 16px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode .month-navigation {
+    background: #374151;
+    border-color: #4b5563;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.nav-btn {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #64748b;
+    font-weight: 600;
+}
+
+.nav-btn:hover {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.current-month {
+    font-weight: 600;
+    color: #1f2937;
+    font-size: 14px;
+    min-width: 140px;
+    text-align: center;
+}
+
+.dark-mode .current-month {
+    color: #f9fafb;
+}
+
+.calendar-container {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.dark-mode .calendar-container {
+    background: #374151;
+    border-color: #4b5563;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.analytics-calendar {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 4px;
+}
+
+.analytics-calendar th {
+    text-align: center;
+    padding: 12px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.dark-mode .analytics-calendar th {
+    color: #9ca3af;
+}
+
+.analytics-calendar td {
+    text-align: center;
+    padding: 0;
+    height: 44px;
+    width: 44px;
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.analytics-calendar td:not(.empty):hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1;
+}
+
+/* Positive days (Profit) */
+.analytics-calendar td.positive {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    border-color: #10b981;
+}
+
+.analytics-calendar td.positive:hover {
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+/* Negative days (Loss) */
+.analytics-calendar td.negative {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+    border-color: #ef4444;
+}
+
+.analytics-calendar td.negative:hover {
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* No trade data */
+.analytics-calendar td.no-data {
+    background: #f8fafc;
+    color: #94a3b8;
+    border: 1px solid #e2e8f0;
+}
+
+.dark-mode .analytics-calendar td.no-data {
+    background: #4b5563;
+    color: #9ca3af;
+    border-color: #6b7280;
+}
+
+.analytics-calendar td.no-data:hover {
+    background: #e2e8f0;
+    color: #64748b;
+}
+
+.dark-mode .analytics-calendar td.no-data:hover {
+    background: #6b7280;
+    color: #d1d5db;
+}
+
+/* Today highlight */
+.analytics-calendar td.today {
+    border: 2px solid #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.analytics-calendar td.today.positive {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.analytics-calendar td.today.negative {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.analytics-calendar td.today.no-data {
+    border-color: #3b82f6;
+    background: #3b82f6;
+    color: white;
+}
+
+/* Empty cells (outside month) */
+.analytics-calendar td.empty {
+    background: transparent;
+    border: none;
+    cursor: default;
+}
+
+.analytics-calendar td.empty:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+/* Tooltip styles */
+.analytics-calendar td[data-tooltip] {
+    position: relative;
+}
+
+.analytics-calendar td[data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1f2937;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    z-index: 1000;
+    margin-bottom: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.analytics-calendar td[data-tooltip]:hover::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 4px solid transparent;
+    border-top-color: #1f2937;
+    margin-bottom: 0;
+}
+
+/* Analytics Summary */
+.analytics-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.summary-item {
+    background: #ffffff;
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.dark-mode .summary-item {
+    background: #374151;
+    border-color: #4b5563;
+}
+
+.summary-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.summary-item .label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.dark-mode .summary-item .label {
+    color: #9ca3af;
+}
+
+.summary-item .value {
+    display: block;
+    font-size: 20px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.dark-mode .summary-item .value {
+    color: #f9fafb;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .analytics-header {
+        flex-direction: column;
+        gap: 16px;
+        align-items: stretch;
+    }
+    
+    .month-navigation {
+        justify-content: center;
+    }
+    
+    .analytics-calendar td {
+        height: 36px;
+        width: 36px;
+        font-size: 12px;
+    }
+    
+    .analytics-summary {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .calendar-container {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .analytics-calendar td {
+        height: 32px;
+        width: 32px;
+        font-size: 11px;
+    }
+    
+    .analytics-calendar th {
+        padding: 8px 4px;
+        font-size: 10px;
+    }
+}
+
+/* Animation for calendar cells */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.analytics-calendar td {
+    animation: fadeInUp 0.3s ease-out;
+}
+
+.analytics-calendar td:nth-child(1) { animation-delay: 0.02s; }
+.analytics-calendar td:nth-child(2) { animation-delay: 0.04s; }
+.analytics-calendar td:nth-child(3) { animation-delay: 0.06s; }
+.analytics-calendar td:nth-child(4) { animation-delay: 0.08s; }
+.analytics-calendar td:nth-child(5) { animation-delay: 0.10s; }
+.analytics-calendar td:nth-child(6) { animation-delay: 0.12s; }
+.analytics-calendar td:nth-child(7) { animation-delay: 0.14s; }
+
+/* Loading state */
+.calendar-loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.calendar-loading::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid #e5e7eb;
+    border-top: 2px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}

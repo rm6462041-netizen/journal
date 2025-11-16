@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Trading Analytics - TradeAnalytics</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="reports.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+</head>
+<body data-theme="light">
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <div class="logo-icon"><i class="fas fa-chart-line"></i></div>
+                <div class="logo-text">TradeAnalytics</div>
+            </div>
+            <a href="index.html" class="nav-item"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="#" class="nav-item active"><i class="fas fa-chart-pie"></i> Reports</a>
+            <a href="#" class="nav-item"><i class="fas fa-chart-bar"></i> Analytics</a>
+            <a href="#" class="nav-item"><i class="fas fa-wallet"></i> Portfolio</a>
+            <a href="add_trade.html" class="nav-item"><i class="fas fa-plus"></i> Add Trade</a>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="reports-container">
+                <!-- Header -->
+                <div class="reports-header">
+                    <h1>Advanced Trading Analytics</h1>
+                    <div class="header-actions">
+                        <button class="theme-toggle" onclick="toggleTheme()">
+                            <i class="fas fa-moon"></i> Dark Mode
+                        </button>
+                        <button class="btn btn-primary" onclick="generatePDFReport()">
+                            <i class="fas fa-file-pdf"></i> Export Report
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="filters-card">
+                    <h3>Analysis Period</h3>
+                    <div class="period-switcher">
+                        <button class="period-btn active" onclick="switchPeriod('daily')">Daily</button>
+                        <button class="period-btn" onclick="switchPeriod('weekly')">Weekly</button>
+                        <button class="period-btn" onclick="switchPeriod('monthly')">Monthly</button>
+                        <button class="period-btn" onclick="switchPeriod('yearly')">Yearly</button>
+                        <button class="period-btn" onclick="switchPeriod('custom')">Custom</button>
+                    </div>
+                    
+                    <div class="filter-row">
+                        <div class="form-group">
+                            <label>Date Range</label>
+                            <select id="dateRange" onchange="updateReports()">
+                                <option value="all">All Time</option>
+                                <option value="today">Today</option>
+                                <option value="week">This Week</option>
+                                <option value="month" selected>This Month</option>
+                                <option value="quarter">This Quarter</option>
+                                <option value="year">This Year</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Trade Type</label>
+                            <select id="tradeTypeFilter" onchange="updateReports()">
+                                <option value="all">All Trades</option>
+                                <option value="buy">Buy Only</option>
+                                <option value="sell">Sell Only</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Symbol</label>
+                            <select id="symbolFilter" onchange="updateReports()">
+                                <option value="all">All Symbols</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance Overview -->
+                <div class="report-grid">
+                    <!-- Performance Summary -->
+                    <div class="report-card large">
+                        <div class="report-header">
+                            <div class="report-title">Performance Overview</div>
+                        </div>
+                        <div class="metric-grid">
+                            <div class="metric-card">
+                                <div class="metric-value" id="totalPnL">$0.00</div>
+                                <div class="metric-label">Total P&L</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" id="winRate">0%</div>
+                                <div class="metric-label">Win Rate</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" id="avgTrade">$0.00</div>
+                                <div class="metric-label">Avg. Trade</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" id="totalTrades">0</div>
+                                <div class="metric-label">Total Trades</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" id="riskReward">0.00</div>
+                                <div class="metric-label">Risk/Reward</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" id="sharpeRatio">0.00</div>
+                                <div class="metric-label">Sharpe Ratio</div>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="performanceChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Win/Loss Analysis -->
+                    <div class="report-card">
+                        <div class="report-header">
+                            <div class="report-title">Win/Loss Distribution</div>
+                        </div>
+                        <div class="chart-container-sm">
+                            <canvas id="winLossChart"></canvas>
+                        </div>
+                        <div class="metric-grid" style="grid-template-columns: 1fr 1fr; margin-top: 15px;">
+                            <div class="metric-card">
+                                <div class="metric-value" id="winningTrades">0</div>
+                                <div class="metric-label">Winning Trades</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" id="losingTrades">0</div>
+                                <div class="metric-label">Losing Trades</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Best/Worst Days -->
+                    <div class="report-card">
+                        <div class="report-header">
+                            <div class="report-title">Best & Worst Days</div>
+                        </div>
+                        <div id="bestWorstDays">
+                            <!-- Dynamic content -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advanced Analytics -->
+                <div class="report-grid">
+                    <!-- Monthly Performance -->
+                    <div class="report-card large">
+                        <div class="report-header">
+                            <div class="report-title">Monthly Performance Heatmap</div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="monthlyChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Strategy Performance -->
+                    <div class="report-card">
+                        <div class="report-header">
+                            <div class="report-title">Strategy Analysis</div>
+                        </div>
+                        <div class="chart-container-sm">
+                            <canvas id="strategyChart"></canvas>
+                        </div>
+                        <div id="strategyDetails" style="margin-top: 15px;">
+                            <!-- Strategy details -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Time-based Analysis -->
+                <div class="report-grid">
+                    <!-- Time of Day Analysis -->
+                    <div class="report-card">
+                        <div class="report-header">
+                            <div class="report-title">Time of Day Performance</div>
+                        </div>
+                        <div class="chart-container-sm">
+                            <canvas id="timeAnalysisChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Day of Week Analysis -->
+                    <div class="report-card">
+                        <div class="report-header">
+                            <div class="report-title">Day of Week Performance</div>
+                        </div>
+                        <div class="chart-container-sm">
+                            <canvas id="dayOfWeekChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Trading Behavior -->
+                    <div class="report-card">
+                        <div class="report-header">
+                            <div class="report-title">Trading Behavior</div>
+                        </div>
+                        <div id="behaviorAnalysis">
+                            <!-- Behavior metrics -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Trades & Symbol Performance -->
+                <div class="report-grid">
+                    <!-- Recent Trades -->
+                    <div class="report-card">
+                        <div class="report-header">
+                            <div class="report-title">Recent Trades</div>
+                            <button class="export-btn" onclick="exportToCSV()">
+                                <i class="fas fa-download"></i> CSV
+                            </button>
+                        </div>
+                        <div class="trade-list" id="recentTradesList">
+                            <!-- Trade items will be populated here -->
+                        </div>
+                    </div>
+
+                    <!-- Symbol Performance -->
+                    <div class="report-card">
+                        <div class="report-header">
+                            <div class="report-title">Top Performing Symbols</div>
+                        </div>
+                        <div class="trade-list" id="symbolPerformanceList">
+                            <!-- Symbol performance will be populated here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advanced Charts -->
+                <div class="report-card xlarge">
+                    <div class="report-header">
+                        <div class="report-title">Advanced Analytics</div>
+                        <div class="analysis-tabs">
+                            <button class="tab-btn active" onclick="switchAnalysisTab('winRate')">Win Rate Trends</button>
+                            <button class="tab-btn" onclick="switchAnalysisTab('distribution')">Profit Distribution</button>
+                            <button class="tab-btn" onclick="switchAnalysisTab('correlation')">Correlation Analysis</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="advancedAnalysisChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="reports.js"></script>
+</body>
+</html>
