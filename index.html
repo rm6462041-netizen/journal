@@ -8,6 +8,15 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="Analytics.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Temporary fix for layout */
+        .user-info a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -22,13 +31,12 @@
         </div>
 
         <a href="#" class="nav-item active"><i class="fas fa-home"></i> Dashboard</a>
-        <a href="#" class="nav-item"><i class="fas fa-chart-bar"></i> A</a>
-        <a href="#" class="nav-item"><i class="fas fa-wallet"></i> Portfolio</a>
         <a href="#" class="nav-item add-trade-btn"><i class="fas fa-plus"></i> Add Trade</a>
         <!-- Add this to your sidebar navigation -->
-<a href="#" class="nav-item" id="reports-link">
-    <i class="fas fa-chart-pie"></i> Reports & Analytics
-</a>
+        <a href="#" class="nav-item" id="reports-link">
+            <i class="fas fa-chart-pie"></i> Reports & Analytics
+        </a>
+        
         <!-- Settings Section -->
         <a href="#" class="nav-item" id="settings-toggle">
             <i class="fas fa-cog"></i> Settings
@@ -65,7 +73,16 @@
 
         <div class="header">
             <h1>Analytics Dashboard</h1>
-           
+            <div class="user-info">
+                <a href="login.html" style="display: flex; align-items: center; text-decoration: none;">
+                    <div class="user-avatar">Ur</div>
+                </a>
+                <span class="user-name">User info</span>
+                <div class="user-dropdown">
+                    <i class="dropdown-icon">▼</i>
+                </div>
+            </div>
+        </div>
 
         <!-- Stats Cards - Empty State -->
         <div class="stats-cards">
