@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Analytics Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 450px;
+            transition: all 0.3s ease;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e1e1;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-bottom: 15px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .switch-text {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .switch-text a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .switch-text a:hover {
+            text-decoration: underline;
+        }
+
+        .back-to-dashboard {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .back-to-dashboard a {
+            color: #666;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .forgot-password a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        /* Form Styles */
+        #signupForm {
+            display: none;
+        }
+
+        #forgotPasswordForm {
+            display: none;
+        }
+
+        .name-fields {
+            display: flex;
+            gap: 10px;
+        }
+
+        .name-fields .form-group {
+            flex: 1;
+        }
+
+        /* Login Options */
+        .login-options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .login-option-btn {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #e1e1e1;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .login-option-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        /* Logout button styles */
+        .logout-btn {
+            width: 100%;
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-top: 10px;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            background: #dc2626;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <!-- Login Form -->
+        <form id="loginForm">
+            <div class="login-header">
+                <h1>Welcome Back</h1>
+                <p>Sign in to your account</p>
+            </div>
+
+            <div class="login-options">
+                <button type="button" class="login-option-btn active" id="emailLoginBtn">Email</button>
+                <button type="button" class="login-option-btn" id="phoneLoginBtn">Phone</button>
+            </div>
+
+            <!-- Email Login -->
+            <div id="emailLoginSection">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                    <div class="error-message" id="emailError">Please enter a valid email</div>
+                </div>
+            </div>
+
+            <!-- Phone Login -->
+            <div id="phoneLoginSection" style="display: none;">
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" placeholder="Enter your phone number" required>
+                    <div class="error-message" id="phoneError">Please enter a valid phone number</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password" required>
+                <div class="error-message" id="passwordError">Password must be at least 6 characters</div>
+            </div>
+
+            <div class="forgot-password">
+                <a id="showForgotPassword">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="login-btn">Sign In</button>
+
+            <div class="switch-text">
+                Don't have an account? <a id="showSignup">Sign up</a>
+            </div>
+        </form>
+
+        <!-- Sign Up Form -->
+        <form id="signupForm">
+            <div class="login-header">
+                <h1>Create Account</h1>
+                <p>Sign up for a new account</p>
+            </div>
+
+            <div class="name-fields">
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="firstName" placeholder="First name" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" placeholder="Last name" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="signupEmail">Email Address</label>
+                <input type="email" id="signupEmail" placeholder="Enter your email" required>
+                <div class="error-message" id="signupEmailError">Please enter a valid email</div>
+            </div>
+
+            <div class="form-group">
+                <label for="phoneNumber">Phone Number</label>
+                <input type="tel" id="phoneNumber" placeholder="Enter your phone number" required>
+                <div class="error-message" id="phoneNumberError">Please enter a valid phone number</div>
+            </div>
+
+            <div class="form-group">
+                <label for="signupPassword">Password</label>
+                <input type="password" id="signupPassword" placeholder="Create a password" required>
+                <div class="error-message" id="signupPasswordError">Password must be at least 6 characters</div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+                <div class="error-message" id="confirmPasswordError">Passwords do not match</div>
+            </div>
+
+            <button type="submit" class="login-btn">Create Account</button>
+
+            <div class="switch-text">
+                Already have an account? <a id="showLogin">Sign in</a>
+            </div>
+        </form>
+
+        <!-- Forgot Password Form -->
+        <form id="forgotPasswordForm">
+            <div class="login-header">
+                <h1>Reset Password</h1>
+                <p>Enter your email to reset password</p>
+            </div>
+
+            <div class="form-group">
+                <label for="forgotEmail">Email Address</label>
+                <input type="email" id="forgotEmail" placeholder="Enter your email" required>
+                <div class="error-message" id="forgotEmailError">Please enter a valid email</div>
+            </div>
+
+            <button type="submit" class="login-btn">Send Reset Link</button>
+
+            <div class="switch-text">
+                Remember your password? <a id="showLoginFromForgot">Sign in</a>
+            </div>
+        </form>
+
+        <!-- Logout Section -->
+        <div id="logoutSection" style="display: none;">
+            <div class="login-header">
+                <h1>Already Logged In</h1>
+                <p>You are currently signed in</p>
+            </div>
+            
+            <div class="form-group" style="text-align: center;">
+                <p id="currentUserInfo" style="font-weight: 600; margin-bottom: 20px;"></p>
+                <button class="logout-btn" id="logoutBtn">Logout</button>
+            </div>
+
+            <div class="back-to-dashboard">
+                <a href="index.html">← Back to Dashboard</a>
+            </div>
+        </div>
+
+        <div class="back-to-dashboard" id="normalBackLink">
+            <a href="index.html">← Back to Dashboard</a>
+        </div>
+    </div>
+
+    <script>
+        // Check if user is already logged in
+        function checkLoginStatus() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            const forgotPasswordForm = document.getElementById('forgotPasswordForm');
+            const logoutSection = document.getElementById('logoutSection');
+            const normalBackLink = document.getElementById('normalBackLink');
+            const currentUserInfo = document.getElementById('currentUserInfo');
+
+            if (currentUser) {
+                loginForm.style.display = 'none';
+                signupForm.style.display = 'none';
+                forgotPasswordForm.style.display = 'none';
+                logoutSection.style.display = 'block';
+                normalBackLink.style.display = 'none';
+                
+                currentUserInfo.textContent = `Logged in as: ${currentUser.firstName} ${currentUser.lastName} (${currentUser.email})`;
+            } else {
+                loginForm.style.display = 'block';
+                signupForm.style.display = 'none';
+                forgotPasswordForm.style.display = 'none';
+                logoutSection.style.display = 'none';
+                normalBackLink.style.display = 'block';
+            }
+        }
+
+        // Login Options Toggle
+        const emailLoginBtn = document.getElementById('emailLoginBtn');
+        const phoneLoginBtn = document.getElementById('phoneLoginBtn');
+        const emailLoginSection = document.getElementById('emailLoginSection');
+        const phoneLoginSection = document.getElementById('phoneLoginSection');
+
+        emailLoginBtn.addEventListener('click', function() {
+            emailLoginBtn.classList.add('active');
+            phoneLoginBtn.classList.remove('active');
+            emailLoginSection.style.display = 'block';
+            phoneLoginSection.style.display = 'none';
+        });
+
+        phoneLoginBtn.addEventListener('click', function() {
+            phoneLoginBtn.classList.add('active');
+            emailLoginBtn.classList.remove('active');
+            phoneLoginSection.style.display = 'block';
+            emailLoginSection.style.display = 'none';
+        });
+
+        // Form toggle functionality
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+        const forgotPasswordForm = document.getElementById('forgotPasswordForm');
+        const showSignup = document.getElementById('showSignup');
+        const showLogin = document.getElementById('showLogin');
+        const showForgotPassword = document.getElementById('showForgotPassword');
+        const showLoginFromForgot = document.getElementById('showLoginFromForgot');
+
+        showSignup.addEventListener('click', function() {
+            loginForm.style.display = 'none';
+            signupForm.style.display = 'block';
+            forgotPasswordForm.style.display = 'none';
+        });
+
+        showLogin.addEventListener('click', function() {
+            signupForm.style.display = 'none';
+            loginForm.style.display = 'block';
+            forgotPasswordForm.style.display = 'none';
+        });
+
+        showForgotPassword.addEventListener('click', function() {
+            loginForm.style.display = 'none';
+            signupForm.style.display = 'none';
+            forgotPasswordForm.style.display = 'block';
+        });
+
+        showLoginFromForgot.addEventListener('click', function() {
+            forgotPasswordForm.style.display = 'none';
+            loginForm.style.display = 'block';
+            signupForm.style.display = 'none';
+        });
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('currentUser');
+                alert('Logged out successfully!');
+                checkLoginStatus();
+            }
+        });
+
+        // Login Form Validation
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+            const isEmailLogin = emailLoginBtn.classList.contains('active');
+            let isValid = true;
+
+            // Reset errors
+            document.querySelectorAll('.error-message').forEach(error => {
+                error.style.display = 'none';
+            });
+
+            if (isEmailLogin) {
+                // Email validation
+                const emailError = document.getElementById('emailError');
+                if (!email.includes('@') || !email.includes('.')) {
+                    emailError.style.display = 'block';
+                    isValid = false;
+                }
+            } else {
+                // Phone validation
+                const phoneError = document.getElementById('phoneError');
+                if (phone.length < 10) {
+                    phoneError.style.display = 'block';
+                    isValid = false;
+                }
+            }
+
+            // Password validation
+            const passwordError = document.getElementById('passwordError');
+            if (password.length < 6) {
+                passwordError.style.display = 'block';
+                isValid = false;
+            }
+
+            if (isValid) {
+                const users = JSON.parse(localStorage.getItem('users')) || [];
+                let user;
+
+                if (isEmailLogin) {
+                    user = users.find(u => u.email === email && u.password === password);
+                } else {
+                    user = users.find(u => u.phone === phone && u.password === password);
+                }
+                
+                if (user) {
+                    localStorage.setItem('currentUser', JSON.stringify({
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        email: user.email,
+                        phone: user.phone
+                    }));
+                    
+                    alert(`Welcome back ${user.firstName}! Redirecting to dashboard...`);
+                    window.location.href = 'index.html';
+                } else {
+                    alert('Invalid credentials!');
+                }
+            }
+        });
+
+        // Sign Up Form Validation
+        document.getElementById('signupForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('signupEmail').value;
+            const phone = document.getElementById('phoneNumber').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            let isValid = true;
+
+            // Reset errors
+            document.querySelectorAll('.error-message').forEach(error => {
+                error.style.display = 'none';
+            });
+
+            // Email validation
+            const emailError = document.getElementById('signupEmailError');
+            if (!email.includes('@') || !email.includes('.')) {
+                emailError.style.display = 'block';
+                isValid = false;
+            }
+
+            // Phone validation
+            const phoneError = document.getElementById('phoneNumberError');
+            if (phone.length < 10) {
+                phoneError.style.display = 'block';
+                isValid = false;
+            }
+
+            // Password validation
+            const passwordError = document.getElementById('signupPasswordError');
+            if (password.length < 6) {
+                passwordError.style.display = 'block';
+                isValid = false;
+            }
+
+            // Confirm password validation
+            const confirmError = document.getElementById('confirmPasswordError');
+            if (password !== confirmPassword) {
+                confirmError.style.display = 'block';
+                isValid = false;
+            }
+
+            if (isValid) {
+                const users = JSON.parse(localStorage.getItem('users')) || [];
+                
+                // Check if user already exists
+                const existingUser = users.find(u => u.email === email || u.phone === phone);
+                if (existingUser) {
+                    alert('User already exists with this email or phone number!');
+                    return;
+                }
+
+                // Create new user
+                const newUser = {
+                    id: Date.now(),
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
+                    phone: phone,
+                    password: password,
+                    createdAt: new Date().toISOString()
+                };
+
+                users.push(newUser);
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                localStorage.setItem('currentUser', JSON.stringify({
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
+                    phone: phone
+                }));
+
+                alert(`Welcome ${firstName} ${lastName}! Account created successfully. Redirecting to dashboard...`);
+                window.location.href = 'index.html';
+            }
+        });
+
+        // Forgot Password Form
+        document.getElementById('forgotPasswordForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('forgotEmail').value;
+            const emailError = document.getElementById('forgotEmailError');
+
+            // Reset error
+            emailError.style.display = 'none';
+
+            if (!email.includes('@') || !email.includes('.')) {
+                emailError.style.display = 'block';
+                return;
+            }
+
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const user = users.find(u => u.email === email);
+
+            if (user) {
+                alert(`Password reset link sent to ${email}. In real app, this would send an email.`);
+                // In real app: Send email with reset link
+                forgotPasswordForm.style.display = 'none';
+                loginForm.style.display = 'block';
+            } else {
+                alert('No account found with this email address!');
+            }
+        });
+
+        // Real-time validation
+        const inputs = ['email', 'phone', 'password', 'signupEmail', 'phoneNumber', 'signupPassword', 'confirmPassword', 'forgotEmail'];
+        inputs.forEach(inputId => {
+            const element = document.getElementById(inputId);
+            if (element) {
+                element.addEventListener('input', function() {
+                    const errorElement = document.getElementById(inputId + 'Error');
+                    if (errorElement) {
+                        errorElement.style.display = 'none';
+                    }
+                });
+            }
+        });
+
+        // Check login status when page loads
+        document.addEventListener('DOMContentLoaded', checkLoginStatus);
+    </script>
+</body>
+</html>
