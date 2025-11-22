@@ -1,4 +1,4 @@
-/* style.css - MODERN REDESIGN */
+/* style.css - COMPLETE UPDATED VERSION */
 :root {
     --primary: #3b82f6;
     --primary-dark: #2563eb;
@@ -31,7 +31,8 @@
     --radius-lg: 12px;
     --radius-xl: 16px;
     
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition: all 0.3s ease;
+    --transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 .dark-mode {
@@ -69,7 +70,7 @@ body {
     background: var(--bg-primary);
 }
 
-/* Sidebar - Modern Redesign */
+/* Sidebar */
 .sidebar {
     width: 280px;
     background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
@@ -81,6 +82,18 @@ body {
     height: 100vh;
     z-index: 1000;
     transition: var(--transition);
+    animation: slideInLeft 0.6s ease-out;
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .logo {
@@ -122,7 +135,7 @@ body {
     color: var(--text-secondary);
     text-decoration: none;
     font-weight: 500;
-    transition: var(--transition);
+    transition: var(--transition-bounce);
     border-left: 3px solid transparent;
     margin: 4px 12px;
     border-radius: var(--radius-md);
@@ -131,7 +144,7 @@ body {
 .nav-item:hover {
     background: var(--bg-card);
     color: var(--primary);
-    transform: translateX(4px);
+    transform: translateX(8px);
     box-shadow: var(--shadow-sm);
 }
 
@@ -150,12 +163,25 @@ body {
 
 /* Settings Submenu */
 .sub-menu {
+    display: none;
     background: var(--bg-card);
     margin: 8px 12px;
     border-radius: var(--radius-lg);
     border: 1px solid var(--border-light);
     overflow: hidden;
     box-shadow: var(--shadow-sm);
+    animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .sub-nav-item {
@@ -234,6 +260,7 @@ input:checked + .slider:before {
     padding: 32px;
     background: var(--bg-primary);
     min-height: 100vh;
+    animation: fadeInUp 0.6s ease-out 0.2s both;
 }
 
 /* Header */
@@ -261,6 +288,12 @@ input:checked + .slider:before {
     gap: 16px;
 }
 
+.user-info a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
 .user-avatar {
     width: 48px;
     height: 48px;
@@ -273,9 +306,14 @@ input:checked + .slider:before {
     font-weight: 600;
     font-size: 16px;
     box-shadow: var(--shadow-md);
+    transition: var(--transition-bounce);
 }
 
-/* Stats Cards - Modern Grid */
+.user-avatar:hover {
+    transform: scale(1.1);
+}
+
+/* Stats Cards */
 .stats-cards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -289,10 +327,16 @@ input:checked + .slider:before {
     border-radius: var(--radius-xl);
     border: 1px solid var(--border-light);
     box-shadow: var(--shadow-sm);
-    transition: var(--transition);
+    transition: var(--transition-bounce);
     position: relative;
     overflow: hidden;
+    animation: fadeInUp 0.6s ease-out;
 }
+
+.stat-card:nth-child(1) { animation-delay: 0.1s; }
+.stat-card:nth-child(2) { animation-delay: 0.2s; }
+.stat-card:nth-child(3) { animation-delay: 0.3s; }
+.stat-card:nth-child(4) { animation-delay: 0.4s; }
 
 .stat-card::before {
     content: '';
@@ -305,7 +349,7 @@ input:checked + .slider:before {
 }
 
 .stat-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-8px);
     box-shadow: var(--shadow-lg);
 }
 
@@ -377,10 +421,16 @@ input:checked + .slider:before {
     border-radius: var(--radius-xl);
     padding: 24px;
     box-shadow: var(--shadow-sm);
-    transition: var(--transition);
+    transition: var(--transition-bounce);
+    animation: fadeInUp 0.6s ease-out;
 }
 
+.chart-card:nth-child(1) { animation-delay: 0.5s; }
+.chart-card:nth-child(2) { animation-delay: 0.6s; }
+.chart-card:nth-child(3) { animation-delay: 0.7s; }
+
 .chart-card:hover {
+    transform: translateY(-5px);
     box-shadow: var(--shadow-md);
 }
 
@@ -419,6 +469,7 @@ input:checked + .slider:before {
     border-radius: var(--radius-xl);
     padding: 24px;
     box-shadow: var(--shadow-sm);
+    animation: fadeInUp 0.6s ease-out 0.8s both;
 }
 
 .activity-header {
@@ -439,6 +490,7 @@ input:checked + .slider:before {
     font-weight: 500;
     text-decoration: none;
     transition: var(--transition);
+    color: var(--primary);
 }
 
 .activity-header a:hover {
@@ -459,11 +511,11 @@ input:checked + .slider:before {
     background: var(--bg-secondary);
     border: 1px solid var(--border-light);
     border-radius: var(--radius-lg);
-    transition: var(--transition);
+    transition: var(--transition-bounce);
 }
 
 .activity-item:hover {
-    transform: translateX(4px);
+    transform: translateX(5px);
     box-shadow: var(--shadow-sm);
 }
 
@@ -539,23 +591,6 @@ input:checked + .slider:before {
     text-decoration: none;
     cursor: pointer;
     transition: var(--transition);
-    position: relative;
-    overflow: hidden;
-}
-
-.btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    transition: left 0.5s;
-}
-
-.btn:hover::before {
-    left: 100%;
 }
 
 .btn-primary {
@@ -635,47 +670,6 @@ input:checked + .slider:before {
     .stat-value {
         font-size: 24px;
     }
-}
-
-/* Animation Classes */
-.fade-in {
-    animation: fadeIn 0.5s ease-in-out;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Loading States */
-.loading {
-    opacity: 0.7;
-    pointer-events: none;
-}
-
-.loading::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 24px;
-    height: 24px;
-    border: 2px solid var(--border-light);
-    border-top: 2px solid var(--primary);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: translate(-50%, -50%) rotate(0deg); }
-    100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
 /* Scrollbar Styling */
