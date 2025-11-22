@@ -671,3 +671,19 @@ function processTradeDataForCalendar(trades, year, month) {
 
     init();
 });
+
+// Display current user - ADD THIS TO script.js
+document.addEventListener('DOMContentLoaded', function() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const userNameElement = document.querySelector('.user-name');
+    const userAvatarElement = document.querySelector('.user-avatar');
+    
+    if (currentUser && userNameElement) {
+        // Update user name
+        userNameElement.textContent = currentUser.firstName + ' ' + currentUser.lastName;
+        
+        // Update avatar initials
+        const initials = (currentUser.firstName[0] + currentUser.lastName[0]).toUpperCase();
+        userAvatarElement.textContent = initials;
+    }
+});

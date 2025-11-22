@@ -1,3 +1,267 @@
+ feature/add-button
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradeAnalytics Dashboard</title>
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="Analytics.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Temporary fix for layout */
+        .user-info a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">
+            <div class="logo-icon"><i class="fas fa-chart-line"></i></div>
+            <div class="logo-text">TradeAnalytics</div>
+        </div>
+
+        <a href="#" class="nav-item active"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="#" class="nav-item add-trade-btn"><i class="fas fa-plus"></i> Add Trade</a>
+        <!-- Add this to your sidebar navigation -->
+        <a href="#" class="nav-item" id="reports-link">
+            <i class="fas fa-chart-pie"></i> Reports & Analytics
+        </a>
+        
+        <!-- Settings Section -->
+        <a href="#" class="nav-item" id="settings-toggle">
+            <i class="fas fa-cog"></i> Settings
+            <i class="fas fa-chevron-down dropdown-arrow"></i>
+        </a>
+
+        <div class="sub-menu" id="settings-submenu">
+            <a href="#" class="sub-nav-item">
+                <i class="fas fa-moon"></i> 
+                <span class="light-text">Light mode</span>
+                <span class="dark-text" style="display:none;">Dark mode</span>
+                <label class="switch">
+                  <input type="checkbox" id="dark-mode-toggle">
+                  <span class="slider round"></span>
+                </label>
+            </a>
+
+            <a href="#" class="sub-nav-item">
+                <i class="fas fa-bell"></i> Notifications
+                <label class="switch">
+                    <input type="checkbox" id="notifications-toggle" checked>
+                    <span class="slider round"></span>
+                </label>
+            </a>
+
+            <a href="#" class="sub-nav-item"><i class="fas fa-user"></i> Profile</a>
+            <a href="#" class="sub-nav-item"><i class="fas fa-question-circle"></i> Help & Support</a>
+            <a href="#" class="sub-nav-item"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <div class="header">
+            <h1>Analytics Dashboard</h1>
+            <div class="user-info">
+                <a href="login.html" style="display: flex; align-items: center; text-decoration: none;">
+                    <div class="user-avatar">Ur</div>
+                </a>
+                <span class="user-name">User info</span>
+                <div class="user-dropdown">
+                    <i class="dropdown-icon">▼</i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Cards - Empty State -->
+        <div class="stats-cards">
+            <div class="stat-card">
+                <div class="stat-value">$0.00</div>
+                <div class="stat-label">Portfolio Value</div>
+                <div class="stat-change">No data</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-value">0.0%</div>
+                <div class="stat-label">Win Rate</div>
+                <div class="stat-change">No data</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-value">$0.00</div>
+                <div class="stat-label">Avg P&L</div>
+                <div class="stat-change">No data</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-value">0</div>
+                <div class="stat-label">Active Trades</div>
+                <div class="stat-change">No data</div>
+            </div>
+        </div>
+
+        <!-- Charts + Analytics -->
+        <div class="charts-wrapper">
+            
+            <div class="left-charts">
+                <div class="chart-card">
+                    <h3>Performance Metrics</h3>
+                    <div class="chart-container">
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                    <div class="chart-empty-state" style="display: none;">
+                        <i class="fas fa-chart-line"></i>
+                        <p>No performance data available</p>
+                        <small>Add trades to see your performance metrics</small>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <h3>Trading Activity</h3>
+                    <div class="chart-container">
+                        <canvas id="activityChart"></canvas>
+                    </div>
+                    <div class="chart-empty-state" style="display: none;">
+                        <i class="fas fa-chart-bar"></i>
+                        <p>No activity data available</p>
+                        <small>Add trades to see your trading activity</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-charts">
+
+                <!-- PnL Calendar -->
+                <div class="chart-card full-width" id="analytics-container">
+                    <h3>PnL Calendar</h3>
+                    <div class="calendar-empty-state">
+                        <i class="fas fa-calendar"></i>
+                        <p>No P&L data available</p>
+                        <small>Add trades to see your daily P&L calendar</small>
+                    </div>
+                </div>
+
+                <!-- Portfolio Chart -->
+                <div class="chart-card full-width">
+                    <h3>Portfolio Overview</h3>
+                    <div class="chart-container">
+                        <canvas id="portfolioChart"></canvas>
+                    </div>
+                    <div class="chart-empty-state" style="display: none;">
+                        <i class="fas fa-pie-chart"></i>
+                        <p>No portfolio data available</p>
+                        <small>Add trades to see your portfolio allocation</small>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="recent-activity">
+            <div class="activity-header">
+                <h3>Recent Activity</h3>
+                <a href="#" style="color:#3b82f6;">View All</a>
+            </div>
+
+            <div class="activity-list">
+                <div class="activity-item empty-state">
+                    <div class="activity-icon"><i class="fas fa-chart-line"></i></div>
+                    <div class="activity-details">
+                        <div class="activity-title">No trades yet</div>
+                        <div class="activity-time">Start adding trades to see your activity</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Core Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="script.js"></script>
+<script src="app.js"></script>
+
+<!-- Analytics Import - FIXED VERSION -->
+<script type="module">
+    import { createAnalytics, processTradeData } from './Analytics.js';
+
+    document.addEventListener("DOMContentLoaded", () => {
+        // Load trades from localStorage
+        const trades = JSON.parse(localStorage.getItem('trades')) || [];
+        const year = new Date().getFullYear();
+        const month = new Date().getMonth();
+        
+        // Process the trade data for the calendar
+        const calendarData = processTradeData(trades, year, month);
+        
+        // Initialize calendar with real data
+        createAnalytics("analytics-container", {
+            year: year,
+            month: month,
+            data: calendarData
+        });
+        
+        // Refresh calendar when trades are updated
+        window.refreshCalendar = function() {
+            const updatedTrades = JSON.parse(localStorage.getItem('trades')) || [];
+            const newData = processTradeData(updatedTrades, year, month);
+            createAnalytics("analytics-container", {
+                year: year,
+                month: month,
+                data: newData
+            });
+        };
+    });
+</script>
+
+<!-- Settings Script -->
+<script>
+document.getElementById('settings-toggle').addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    const submenu = document.getElementById('settings-submenu');
+
+    submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
+});
+
+// Close settings when clicking outside
+document.addEventListener('click', function(e) {
+    const submenu = document.getElementById('settings-submenu');
+    const settingsToggle = document.getElementById('settings-toggle');
+    
+    if (!settingsToggle.contains(e.target) && !submenu.contains(e.target)) {
+        submenu.style.display = 'none';
+    }
+});
+</script>
+
+<script type="module">
+    import * as AddTradeModule from './AddTradeButton.js';
+    
+    document.querySelector('.add-trade-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+        AddTradeModule.handleAddTrade(e);
+    });
+</script>
+
+</body>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -246,4 +510,5 @@ document.addEventListener('click', function(e) {
 </script>
 
 </body>
+ main
 </html>
