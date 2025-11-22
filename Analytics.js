@@ -1,5 +1,5 @@
 // Analytics.js - FIXED VERSION
-import './Analytics.css';
+
 
 export function createAnalytics(containerId, options = {}) {
     const {
@@ -224,4 +224,5 @@ export function refreshCalendar() {
     const data = processTradeData(trades, year, month);
     
     renderCalendar(year, month, data);
+
 }
